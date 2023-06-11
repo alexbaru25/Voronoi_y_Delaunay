@@ -49,9 +49,6 @@ Este archivo contiene la implementación principal del algoritmo de línea de ba
     - `get_output` devuelve una representación visual del diagrama de Voronoi en forma de lista, que contiene las coordenadas de los puntos de inicio y fin de cada segmento.
     - `get_del` devuelve una representación visual de la triangulación de Delaunay en forma de lista, que contiene las coordenadas de los puntos de inicio y fin de cada segmento.
 
-Este archivo contiene el código principal necesario para ejecutar el programa y obtener los diagramas de Voronoi y triangulaciones de Delaunay a partir de los nodos proporcionados.            
-
-
             
 
 
