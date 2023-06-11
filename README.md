@@ -35,9 +35,7 @@ Este archivo contiene la definición de varias clases utilizadas en el programa:
 Este archivo contiene la implementación principal del algoritmo de línea de barrido para computar los diagramas de Voronoi y triangulaciones de Delaunay.
 
 - La clase `Voronoi` representa el programa en sí. Toma como entrada los nodos y si se desea computar la triangulación de Delaunay.
-  - En el método `__init__`, se realizan las inicializaciones necesarias, como la creación de listas para almacenar los segmentos de los diagramas de Voronoi y triangulaciones de Delaun
-
-ay, la inicialización de un árbol binario, colas de prioridad para puntos y circunferencias de eventos, una caja para unir los segmentos incompletos, y la inserción de los puntos iniciales en la cola de prioridad de puntos.
+  - En el método `__init__`, se realizan las inicializaciones necesarias, como la creación de listas para almacenar los segmentos de los diagramas de Voronoi y triangulaciones de Delaunay, la inicialización de un árbol binario, colas de prioridad para puntos y circunferencias de eventos, una caja para unir los segmentos incompletos, y la inserción de los puntos iniciales en la cola de prioridad de puntos.
   - La clase `Voronoi` también implementa varias funciones internas para computar el problema:
     - `process` es la función principal que maneja el movimiento de la línea de barrido a través de los eventos. Procesa las circunferencias y puntos de eventos en el orden correcto y luego une los segmentos incompletos al final.
     - `process_point` se encarga de procesar los puntos de eventos. Obtiene el punto de eventos con mayor prioridad de la cola de prioridad, lo elimina de la cola y lo inserta en el árbol.
