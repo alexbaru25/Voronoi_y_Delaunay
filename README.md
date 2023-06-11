@@ -1,76 +1,57 @@
+       
 # Voronoi_y_Delaunay
-Este es un trabajo basado en  https://github.com/jansonh/Voronoi.git de Janson Hendryli. Se han comentado todas las funciones para un mayor comprendimiento del trabajo. Además se ha implementando la opción de computar la triangulación de Delaunay. 
 
-Consiste en computar con el algoritmo de Fortune diagramas de Voronoi y la triangulaciones de Delaunay, teniendo unos nodos como datos iniciales.
-Este programa está implementado con Python y utiliza la libreria tkinter para graficar los resultados obtenidos.
+Este trabajo se basa en el repositorio de GitHub de Janson Hendryli, disponible en [https://github.com/jansonh/Voronoi.git](https://github.com/jansonh/Voronoi.git). Se han agregado comentarios a todas las funciones para facilitar la comprensión del código. Además, se ha implementado la opción de computar la triangulación de Delaunay.
 
-Instrucciones de ejecucion:
-  1. Ejecuta el archivo main.py
-  2. En la ventana emergente, añadir nodos haciendo doble click en la pantalla emergente.
-  3. Para computar el diagrama de Voronoi clicar en Voronoi, para eliminar los nodos de la ventana emergente clicar en Clear, y para computar la triangulación de Delaunay clicar en Delaunay
-  4. Para cerrar la ventana pulsar la cruz que se encuentra en la parte superior derecha de la ventana
+El objetivo de este programa es computar diagramas de Voronoi y triangulaciones de Delaunay utilizando el algoritmo de Fortune. El programa está escrito en Python y utiliza la biblioteca tkinter para graficar los resultados obtenidos.
 
-Descripcion del código
+## Instrucciones de ejecución
 
-En main.py:
-   Se generan los botones y las opciones de la interfaz
+1. Ejecuta el archivo `main.py`.
+2. En la ventana emergente, añade nodos haciendo doble clic en la pantalla.
+3. Para computar el diagrama de Voronoi, haz clic en el botón "Voronoi". Para eliminar los nodos de la pantalla, haz clic en el botón "Clear". Para computar la triangulación de Delaunay, haz clic en el botón "Delaunay".
+4. Para cerrar la ventana, haz clic en la cruz ubicada en la parte superior derecha de la ventana.
 
-En DataType.py:
-   -Se crea la clase Point, que representa un punto en el plano
-   -Se crea la clase Event, representa un evento, en sus componentes:
-        - 'x' representa el radio de la circunferencia   
-        - 'p' representa el centro de la circunferencia
-        - 'a' representa el arco que corresponde el evento
-   -Se crea la clase Arc, representa un arco de la línea de playa, sus componentes son:
-        -'p' representa el nodo que genera el arco
-        -'pprev' representa  el arco previo,
-        -'pnext' representa el arco siguiente
-        -'e' representa el evento que tiene relación con el arco, sus componentes son:
-        -'s0' representa al segmento que se genera entre el arco y 'pprev'
-        -'s1' representa al segmento que se genera entre el arco y 'pnext'
-   -Se crea la clase Segment, representa un segmento del diagrama de Voronoi, sus componentes son:
-        -'start' representa el comienzo del segmento
-        -'end' representa el final del segmento
-        -'done' representa si ha finalizado el segmento
-   - Se crea la clase PriorityQueue, representa una cola de prioridad, sus componentes son:
-        - 'push' para introducir elementos en la cola de prioridad
-        - 'top'  para obtener el elemento con mayor prioridad de la cola de prioridad
-        - 'pop'  para obtener el elemento con mayor prioridad y eliminarlo de la cola de prioridad
-        - 'empty' para conocer si la cola de prioridad está vacía
-   
-En Voronoi.py:
-   -Se crea una clase Voronoi cuyos datos de entrada son los nodos y si se desea computar la triangulación de Delaunay.
-       -En el init se realiza lo siguiente:
-           -Se crea una lista para almacenar los segmentos que conforman los diagramas de Voronoi.
-           -Se crea otra lista para almacenar los segmentos que conforman las triangulaciones de Delaunay.
-           -Se inicializa un árbol binario.
-           -Se inicializa una cola de prioridad para los puntos de eventos.
-           -Se inicializa una cola de prioridad para las circunferencias de eventos.
-           -Se crea una caja para unir todos los segmentos que no hayan finalizado su procesamiento.
-           -Dado que se conocen previamente los puntos de eventos, introducimos en la cola llamada `self.points` los puntos que hemos indicado.
-           -Si hay nodos que se encuentran fuera de la caja, es posible que sea necesario modificar las dimensiones de la caja 
-            para asegurarnos de que todos los nodos se encuentren dentro de ella. 
-           -Esto se hace para garantizar que los cálculos y las intersecciones de segmentos se realicen correctamente.
-       - Se implementan divesas funciones internas para poder computar el problema:
-            -La función `process` es la funcion principal del programa que maneja el movimiento de la línea de barrido a través de eventos.
-             Procesa circunferencias y puntos de eventos en el orden correcto. Luego de procesar todos los eventos, se unen los
-             segmentos incompletos para asegurar su conexión adecuada.
-            - La función `process_point` procesa los puntos de eventos. Obtiene el punto de eventos con mayor prioridad de la cola de prioridad, lo elimina de la cola, y lo inserta en el árbol.
-            - La función `process_event` maneja las circunferencias de eventos. Se extrae el evento de mayor prioridad de la cola de prioridad. Luego, se verifica si el evento es válido. Si es válido, se crea un nuevo                 segmento que comienza en el punto asignado al evento. Se realizan las operaciones necesarias para eliminar el arco asociado al evento y se finalizan los segmentos relacionados con ese arco. Después de esto,               se comprueba si las circunferencias de eventos circundantes han sido modificadas, y si es así, se actualizan los eventos relacionados y se vuelven a introducir en la cola de prioridad de eventos
-              correspondiente.
-            - La función `arc_insert` se encarga de insertar un nuevo arco en el árbol de parábolas. Si el árbol está vacío, se crea un nuevo árbol con el arco correspondiente al nodo 'p'. En caso contrario, se recorre                 el árbol para determinar si la parábola generada por el punto 'p' intersecta con algún arco existente en el árbol.
-              Si se encuentra una intersección, se crean nuevos arcos y segmentos, y se actualizan los arcos existentes para insertar el nuevo arco entre ellos. Se verifican también las circunferencias de eventos para                 detectar posibles modificaciones. Si no se encuentra ninguna intersección, se agrega el nuevo arco al final del árbol.
-            - La función `check_circle_event` se encarga de verificar si hay una nueva circunferencia de eventos asociada al arco 'i' en el árbol de parábolas. Si existe una circunferencia de eventos anteriormente
-              asignada a 'i' y su coordenada x no es igual a 'x0', se marca como inválida para evitar su procesamiento. Luego, se verifica si el arco 'i' tiene un arco anterior y un arco siguiente. Si no los tiene, 
-              la función termina. En caso contrario, se comprueba si hay una circunferencia de eventos que satisfaga ciertas condiciones. Si se cumple, se crea un nuevo evento de circunferencia y se agrega a la cola 
-              de prioridad de  eventos.
-            - La función `circle` se encarga de determinar si los tres nodos dados (a, b, c) forman una circunferencia válida. Para ello, realiza una serie de cálculos basados en el producto vectorial de Gibbs y las                   ecuaciones de las mediatrices.
-            - La función `intersect` se utiliza para verificar si el arco 'i' intersecta con el arco representado por el nodo 'p'. En caso de que exista una intersección, la función también determina el punto exacto de                intersección.
-            - La función `intersection` se utiliza para calcular la intersección entre dos parábolas definidas por sus nodos y una directriz. La función utiliza la ecuación general de una parábola para encontrar las                    coordenadas x e y del punto de intersección.
-            - La función `finish_edges` se utiliza para completar todos los segmentos cuya componente 'end' es 'None'. Esto ocurre cuando la línea de barrido ha procesado todos los eventos y aún no se ha completado el                  segmento correspondiente a un arco.
-            - La función `get_output` se utiliza para obtener una representación del diagrama de Voronoi de los segmentos generados por el algoritmo de línea de barrido. Retorna una lista que contiene las coordenadas de               los puntos de inicio y fin de cada segmento.
-            - La función `get_del` se utiliza para obtener una representación de la triangulación de Delaunay de los segmentos generados por el algoritmo de línea de barrido. Retorna una lista que contiene las                         coordenadas de los puntos de inicio y fin de cada segmento.
-            
+## Descripción del código
+
+El código está organizado en varios archivos para facilitar su comprensión:
+
+### main.py
+
+Este archivo se encarga de generar los botones y opciones de la interfaz de usuario.
+
+### DataType.py
+
+Este archivo contiene la definición de varias clases utilizadas en el programa:
+
+- La clase `Point` representa un punto en el plano.
+- La clase `Event` representa un evento y tiene componentes como `x` (radio de la circunferencia), `p` (centro de la circunferencia) y `a` (arco relacionado al evento).
+- La clase `Arc` representa un arco de la línea de playa y tiene componentes como `p` (nodo que genera el arco), `pprev` (arco anterior), `pnext` (arco siguiente), `e` (evento relacionado al arco), `s0` (segmento generado entre el arco y `pprev`) y `s1` (segmento generado entre el arco y `pnext`).
+- La clase `Segment` representa un segmento del diagrama de Voronoi y tiene componentes como `start` (punto de inicio del segmento), `end` (punto final del segmento) y `done` (indica si el segmento ha sido completado).
+- La clase `PriorityQueue` representa una cola de prioridad y tiene métodos como `push` (para insertar elementos), `top` (para obtener el elemento con mayor prioridad), `pop` (para obtener y eliminar el elemento con mayor prioridad) y `empty` (para verificar si la cola de prioridad está vacía).
+
+### Voronoi.py
+
+Este archivo contiene la implementación principal del algoritmo de línea de barrido para computar los diagramas de Voronoi y triangulaciones de Delaunay.
+
+- La clase `Voronoi` representa el programa en sí. Toma como entrada los nodos y si se desea computar la triangulación de Delaunay.
+  - En el método `__init__`, se realizan las inicializaciones necesarias, como la creación de listas para almacenar los segmentos de los diagramas de Voronoi y triangulaciones de Delaun
+
+ay, la inicialización de un árbol binario, colas de prioridad para puntos y circunferencias de eventos, una caja para unir los segmentos incompletos, y la inserción de los puntos iniciales en la cola de prioridad de puntos.
+  - La clase `Voronoi` también implementa varias funciones internas para computar el problema:
+    - `process` es la función principal que maneja el movimiento de la línea de barrido a través de los eventos. Procesa las circunferencias y puntos de eventos en el orden correcto y luego une los segmentos incompletos al final.
+    - `process_point` se encarga de procesar los puntos de eventos. Obtiene el punto de eventos con mayor prioridad de la cola de prioridad, lo elimina de la cola y lo inserta en el árbol.
+    - `process_event` maneja las circunferencias de eventos. Extrae el evento de circunferencia con mayor prioridad de la cola, verifica su validez y realiza las operaciones necesarias para crear un nuevo segmento, eliminar el arco asociado al evento y finalizar los segmentos relacionados a ese arco. Luego, verifica si las circunferencias de eventos circundantes han sido modificadas y actualiza los eventos relacionados si es necesario.
+    - `arc_insert` se encarga de insertar un nuevo arco en el árbol de parábolas. Si el árbol está vacío, se crea un nuevo árbol con el arco correspondiente al nodo dado. Si el árbol no está vacío, se recorre para encontrar la posición adecuada para insertar el nuevo arco, realizando intersecciones y actualizaciones si es necesario.
+    - `check_circle_event` verifica si hay una nueva circunferencia de eventos asociada a un arco en el árbol de parábolas. Si existe una circunferencia de eventos previamente asignada y es válida, se crea un nuevo evento de circunferencia y se agrega a la cola de prioridad de eventos.
+    - `circle` determina si tres puntos forman una circunferencia válida utilizando cálculos basados en el producto vectorial de Gibbs y las ecuaciones de las mediatrices.
+    - `intersect` verifica si un arco intersecta con otro arco representado por un punto dado. Si hay una intersección, se calcula el punto exacto de intersección.
+    - `intersection` calcula la intersección entre dos parábolas definidas por nodos y una directriz utilizando la ecuación general de una parábola.
+    - `finish_edges` se utiliza para completar los segmentos que aún no han sido finalizados al finalizar el proceso de línea de barrido.
+    - `get_output` devuelve una representación visual del diagrama de Voronoi en forma de lista, que contiene las coordenadas de los puntos de inicio y fin de cada segmento.
+    - `get_del` devuelve una representación visual de la triangulación de Delaunay en forma de lista, que contiene las coordenadas de los puntos de inicio y fin de cada segmento.
+
+Este archivo contiene el código principal necesario para ejecutar el programa y obtener los diagramas de Voronoi y triangulaciones de Delaunay a partir de los nodos proporcionados.            
 
 
             
